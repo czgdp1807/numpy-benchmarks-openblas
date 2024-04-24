@@ -1,5 +1,6 @@
 import os
 import argparse
+from utils import generate_target_dir_name
 
 openblas_target_cpu_archs = {"arm64": ["ARMV8"]}
 
@@ -13,9 +14,9 @@ def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     else:
         os.system("asv run --show-stderr --python=same "
                   "--set-commit-hash {}".format(commit_hash))
-    target_dir = "{}/results_{}_{}_{}".format(
-        dest_dir, commit_hash, target_arch,
-        benchmark_name if benchmark_name is not None else ""
+    target_dir = "{}/{}".format(
+        dest_dir, generate_target_dir_name(
+            commit_hash, target_arch, benchmark_name)
     )
     os.system("mkdir -p {}".format(target_dir))
     os.system("cp -r results/* {}/".format(target_dir))
