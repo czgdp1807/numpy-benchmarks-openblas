@@ -2,9 +2,7 @@ import os
 import argparse
 import json
 import glob
-from utils import generate_target_dir_name, tabulate_simplified_results
-
-openblas_target_cpu_archs = {"arm64": ["ARMV8"]}
+from utils import generate_target_dir_name, tabulate_simplified_results, openblas_target_cpu_archs
 
 def simplify_benchmark_result(target_arch, commit_hash, result_dir,
                               simplified_results_dir, benchmark_name=None,

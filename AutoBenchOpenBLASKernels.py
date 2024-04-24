@@ -1,8 +1,6 @@
 import os
 import argparse
-from utils import generate_target_dir_name
-
-openblas_target_cpu_archs = {"arm64": ["ARMV8"]}
+from utils import generate_target_dir_name, openblas_target_cpu_archs
 
 def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     os.chdir("benchmarks")
@@ -21,6 +19,7 @@ def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     os.system("mkdir -p {}".format(target_dir))
     os.system("cp -r results/* {}/".format(target_dir))
     os.system("rm -rf results/")
+    os.chdir("../")
 
 def run_benchmarks_for_cpu_archs(target_archs, commit_hash, dest_dir, benchmark_name):
     for target_arch in target_archs:

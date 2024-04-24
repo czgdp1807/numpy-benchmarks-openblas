@@ -1,5 +1,7 @@
 import tabulate
 
+openblas_target_cpu_archs = {"arm64": ["ARMV8", "CORTEXA53", "FT2000"]}
+
 def generate_target_dir_name(commit_hash, target_arch, benchmark_name):
     return "results_{}_{}_{}".format(
         commit_hash, target_arch,
