@@ -5,13 +5,14 @@ from utils import generate_target_dir_name, openblas_target_cpu_archs
 def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     os.chdir("benchmarks")
     os.environ["OPENBLAS_CORETYPE"] = target_arch
+    os.system("printenv OPENBLAS_CORETYPE")
     if benchmark_name is not None:
-        os.system("asv run --show-stderr --python=same "
+        os.system("OPENBLAS_CORETYPE={} asv run --show-stderr --python=same "
                   "--bench {} --set-commit-hash {}".format(
-                      benchmark_name, commit_hash))
+                      target_arch, benchmark_name, commit_hash))
     else:
-        os.system("asv run --show-stderr --python=same "
-                  "--set-commit-hash {}".format(commit_hash))
+        os.system("OPENBLAS_CORETYPE={} asv run --show-stderr --python=same "
+                  "--set-commit-hash {}".format(target_arch, commit_hash))
     target_dir = "{}/{}".format(
         dest_dir, generate_target_dir_name(
             commit_hash, target_arch, benchmark_name)
