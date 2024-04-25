@@ -12,12 +12,9 @@ def simplify_benchmark_result(target_arch, commit_hash, result_dir,
         if ".json" in content:
             with open(content) as f:
                 data = json.load(f)
-                if "commit_hash" not in data:
+                if ("commit_hash" not in data or
+                    commit_hash != data["commit_hash"]):
                     continue
-
-                if commit_hash != data["commit_hash"]:
-                    raise ValueError("Expected commit hash {}, found {} instead.".format(
-                        commit_hash, data["commit_hash"]))
 
                 result_columns = data["result_columns"]
                 params = data["params"]
