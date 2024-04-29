@@ -24,6 +24,13 @@ def simplify_benchmark_result(target_arch, commit_hash, result_dir,
                     q1, q3 = None, None
                     result = dict(zip(result_columns, results[benchmark]))
                     simplified_result = {}
+                    if result["result"] is None:
+                        simplified_result = {"mean": None, "stats_q_75": None,
+                                             "stats_q_25": None, "spread": None,
+                                             "params": None}
+                        simplified_results[benchmark] = simplified_result
+                        continue
+
                     if len(result["params"]) == 0:
                         simplified_result["mean"] = result["result"][0]
                         q3 = result["stats_q_75"][0]

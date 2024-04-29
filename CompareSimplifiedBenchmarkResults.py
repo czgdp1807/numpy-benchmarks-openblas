@@ -48,6 +48,8 @@ def process_simplified_benchmark_results(target_archs, commit_hash, result_dir,
     for benchdata in arch2benchdata:
         benchdata_results = benchdata["results"]
         for benchmark in benchmarks:
+            if benchdata_results[benchmark]["params"] is None:
+                continue
             if len(benchdata_results[benchmark]["params"]) > 0:
                 for i in range(len(benchdata_results[benchmark]["params"])):
                     param = benchdata_results[benchmark]["params"][i]
