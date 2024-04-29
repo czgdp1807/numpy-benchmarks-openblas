@@ -4,8 +4,17 @@ import json
 import tabulate
 from utils import generate_target_dir_name, openblas_target_cpu_archs
 
-def tabulate_results(benchmarkparams2archtimes):
+def tabulate_results(benchmarkparams2archtimes, threshold):
     for benchmark in benchmarkparams2archtimes:
+        are_all_below_threshold = True
+        for mean, spread, arch in benchmarkparams2archtimes[benchmark]:
+            if mean >= threshold:
+                are_all_below_threshold = False
+                break
+
+        if are_all_below_threshold:
+            continue
+
         print(benchmark)
         means, spreads, archs = [], [], []
         for mean, spread, arch in benchmarkparams2archtimes[benchmark]:
@@ -21,7 +30,8 @@ def tabulate_results(benchmarkparams2archtimes):
                                 headers="keys", tablefmt="pipe"))
         print()
 
-def process_simplified_benchmark_results(target_archs, commit_hash, result_dir, benchmark_name, presentation):
+def process_simplified_benchmark_results(target_archs, commit_hash, result_dir,
+                                         benchmark_name, presentation, threshold):
     arch2benchdata = []
     for target_arch in target_archs:
         simplified_results_dir = os.path.expanduser("{}/simplified_results".format(result_dir))
@@ -58,7 +68,8 @@ def process_simplified_benchmark_results(target_archs, commit_hash, result_dir, 
                 )
 
     if presentation == "table":
-        tabulate_results(benchmarkparams2archtimes)
+        print(arch2benchdata[0]["params"])
+        tabulate_results(benchmarkparams2archtimes, threshold)
     else:
         raise ValueError("{} is not supported.".format(presentation))
 
@@ -69,9 +80,10 @@ if __name__ == "__main__":
     parser.add_argument('--hardware', dest='hardware', required=True)
     parser.add_argument('--result-dir', dest='result_dir', required=True)
     parser.add_argument('--presentation', dest='presentation', required=False, default="table")
+    parser.add_argument('--threshold', dest='threshold', required=False, default=1e-2)
 
     args = parser.parse_args()
     process_simplified_benchmark_results(
         openblas_target_cpu_archs[args.hardware], args.commit_hash, args.result_dir,
-        args.benchmark_name, args.presentation
+        args.benchmark_name, args.presentation, args.threshold
     )
