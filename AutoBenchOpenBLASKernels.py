@@ -4,6 +4,8 @@ from utils import generate_target_dir_name, openblas_target_cpu_archs
 
 def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     os.chdir("benchmarks")
+    if "OPENBLAS_CORETYPE" in os.environ:
+        del os.environ['OPENBLAS_CORETYPE']
     os.environ["OPENBLAS_CORETYPE"] = target_arch
     os.system("printenv OPENBLAS_CORETYPE")
     if benchmark_name is not None:
@@ -31,8 +33,8 @@ if __name__ == "__main__":
     parser.add_argument('--set-commit-hash', dest='commit_hash', required=True)
     parser.add_argument('--benchmark-name', dest='benchmark_name', default=None)
     parser.add_argument('--hardware', dest='hardware', required=True)
-    parser.add_argument('--dest-dir', dest='dest_dir', required=True)
+    parser.add_argument('--result-dir', dest='result_dir', required=True)
 
     args = parser.parse_args()
     run_benchmarks_for_cpu_archs(openblas_target_cpu_archs[args.hardware],
-                                 args.commit_hash, args.dest_dir, args.benchmark_name)
+                                 args.commit_hash, args.result_dir, args.benchmark_name)
