@@ -2,6 +2,8 @@ import os
 import argparse
 import json
 import tabulate
+import matplotlib.pyplot as plt
+import numpy as np
 from utils import generate_target_dir_name, openblas_target_cpu_archs
 
 def tabulate_results(benchmarkparams2archtimes, threshold):
@@ -28,6 +30,31 @@ def tabulate_results(benchmarkparams2archtimes, threshold):
         ratios = [mean/means[0] for mean in means]
         print(tabulate.tabulate({"arch": archs, "mean": means, "spread": spreads, "perf_ratios": ratios},
                                 headers="keys", tablefmt="pipe"))
+        print()
+
+def plot_results(benchmarkparams2archtimes, threshold):
+    for benchmark in benchmarkparams2archtimes:
+        are_all_below_threshold = True
+        for mean, spread, arch in benchmarkparams2archtimes[benchmark]:
+            if mean >= threshold:
+                are_all_below_threshold = False
+                break
+
+        if are_all_below_threshold:
+            continue
+
+        print(benchmark)
+        means, spreads, archs = [], [], []
+        for mean, spread, arch in benchmarkparams2archtimes[benchmark]:
+            means.append(mean)
+            spreads.append(spread)
+            archs.append(arch)
+        combined = sorted(zip(means, spreads, archs))
+        means = [mean for mean, _, _ in combined]
+        spreads = [spread for _, spread, _ in combined]
+        archs = [arch for _, _, arch in combined]
+        plt.errorbar(archs, means, spreads, linestyle='None', marker='^')
+        plt.show()
         print()
 
 def process_simplified_benchmark_results(target_archs, commit_hash, result_dir,
@@ -69,9 +96,11 @@ def process_simplified_benchmark_results(target_archs, commit_hash, result_dir,
                     benchdata["arch"])
                 )
 
+    print(arch2benchdata[0]["params"])
     if presentation == "table":
-        print(arch2benchdata[0]["params"])
         tabulate_results(benchmarkparams2archtimes, threshold)
+    elif presentation == "graph":
+        plot_results(benchmarkparams2archtimes, threshold)
     else:
         raise ValueError("{} is not supported.".format(presentation))
 
