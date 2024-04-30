@@ -1,5 +1,6 @@
 import os
 import argparse
+import subprocess
 from utils import generate_target_dir_name, openblas_target_cpu_archs
 
 def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
@@ -7,14 +8,14 @@ def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     if "OPENBLAS_CORETYPE" in os.environ:
         del os.environ['OPENBLAS_CORETYPE']
     os.environ["OPENBLAS_CORETYPE"] = target_arch
-    os.system("printenv OPENBLAS_CORETYPE")
+    subprocess.run(["printenv", "OPENBLAS_CORETYPE"])
     if benchmark_name is not None:
-        os.system("OPENBLAS_CORETYPE={} asv run --show-stderr --python=same "
-                  "--bench {} --set-commit-hash {}".format(
-                      target_arch, benchmark_name, commit_hash))
+        subprocess.run(["asv", "run", "--show-stderr", "--python", "same",
+                        "--bench", benchmark_name, "--set-commit-hash",
+                        commit_hash], check=True)
     else:
-        os.system("OPENBLAS_CORETYPE={} asv run --show-stderr --python=same "
-                  "--set-commit-hash {}".format(target_arch, commit_hash))
+        subprocess.run(["asv", "run", "--show-stderr", "--python", "same",
+                        "--set-commit-hash", commit_hash], check=True)
     target_dir = "{}/{}".format(
         dest_dir, generate_target_dir_name(
             commit_hash, target_arch, benchmark_name)
