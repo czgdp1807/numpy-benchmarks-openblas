@@ -13,13 +13,22 @@ if __name__ == "__main__":
     scripts = [
         "../numpy-benchmarks-openblas/AutoBenchOpenBLASKernels.py",
         "../numpy-benchmarks-openblas/SimplifyASVBenchmarkResults.py",
-        "../numpy-benchmarks-openblas/CompareSimplifiedBenchmarkResults.py"
+        "numpy-benchmarks-openblas/CompareSimplifiedBenchmarkResults.py"
     ]
 
     for script in scripts:
         cmd = "python {}".format(script)
         cmd_args = " --set-commit-hash={} --benchmark-name={} --hardware={} --result-dir={} ".format(
                     args.commit_hash, args.benchmark_name, args.hardware, args.result_dir)
-        if script == "../numpy-benchmarks-openblas/CompareSimplifiedBenchmarkResults.py":
+        if (script == "numpy-benchmarks-openblas/CompareSimplifiedBenchmarkResults.py" and
+            args.presentation == "graph"):
+            os.chdir("..")
+            os.system("pip uninstall numpy")
+            os.system("pip install numpy==1.26.0")
             cmd_args += "--presentation={}".format(args.presentation)
-        os.system(cmd + cmd_args)
+            os.system(cmd + cmd_args)
+            os.chdir("numpy")
+            os.system("pip install -r requirements/build_requirements.txt")
+            os.system("pip install -e . --no-build-isolation")
+        else:
+            os.system(cmd + cmd_args)
