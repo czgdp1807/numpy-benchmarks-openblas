@@ -12,10 +12,10 @@ def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     if benchmark_name is not None:
         subprocess.run(["asv", "run", "--show-stderr", "--python", "same",
                         "--bench", benchmark_name, "--set-commit-hash",
-                        commit_hash], check=True)
+                        commit_hash])
     else:
         subprocess.run(["asv", "run", "--show-stderr", "--python", "same",
-                        "--set-commit-hash", commit_hash], check=True)
+                        "--set-commit-hash", commit_hash])
     target_dir = "{}/{}".format(
         dest_dir, generate_target_dir_name(
             commit_hash, target_arch, benchmark_name)
