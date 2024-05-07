@@ -134,7 +134,7 @@ if __name__ == "__main__":
     parser.add_argument('--hardware', dest='hardware', required=True)
     parser.add_argument('--result-dir', dest='result_dir', required=True)
     parser.add_argument('--presentation', dest='presentation', required=False, default="table")
-    parser.add_argument('--threshold', dest='threshold', required=False, default=1e-2)
+    parser.add_argument('--threshold', dest='threshold', required=False, default=1e-10)
 
     args = parser.parse_args()
     process_simplified_benchmark_results(

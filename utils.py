@@ -27,13 +27,11 @@ openblas_target_cpu_archs = {"arm64": [
 "FT2000"
 ],
 
-"x86_64": ["P2",
-"KATMAI",
+"x86_64": ["KATMAI",
 "COPPERMINE",
 "NORTHWOOD",
 "PRESCOTT",
 "BANIAS",
-"YONAH",
 "CORE2",
 "PENRYN",
 "DUNNINGTON",
