@@ -86,6 +86,10 @@ def process_simplified_benchmark_results(target_archs, hardware, commit_hash, re
             simplified_results_dir,
             generate_target_dir_name(commit_hash, target_arch, benchmark_name)
         )
+
+        if not os.path.exists(filename):
+            continue
+
         with open(filename) as f:
             arch2benchdata.append(json.load(f))
 
