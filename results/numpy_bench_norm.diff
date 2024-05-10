@@ -1,0 +1,26 @@
+diff --git a/benchmarks/benchmarks/common.py b/benchmarks/benchmarks/common.py
+index d4c1540ff2..e7fa77e24e 100644
+--- a/benchmarks/benchmarks/common.py
++++ b/benchmarks/benchmarks/common.py
+@@ -12,10 +12,10 @@
+ # but will seed it nevertheless
+ np.random.seed(1)
+ 
+-nx, ny = 1000, 1000
++nx, ny = 12000, 12000
+ # reduced squares based on indexes_rand, primarily for testing more
+ # time-consuming functions (ufunc, linalg, etc)
+-nxs, nys = 100, 100
++nxs, nys = 12000, 12000
+ 
+ # a list of interesting types to test
+ TYPES1 = [
+@@ -42,7 +42,7 @@
+ @lru_cache(typed=True)
+ def get_values():
+     rnd = np.random.RandomState(1)
+-    values = np.tile(rnd.uniform(0, 100, size=nx*ny//10), 10)
++    values = np.tile(rnd.uniform(0, 1000, size=nx*ny//10), 10)
+     return values
+ 
+ 

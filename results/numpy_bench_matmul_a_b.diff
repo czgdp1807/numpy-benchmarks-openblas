@@ -1,0 +1,129 @@
+diff --git a/benchmarks/benchmarks/bench_linalg.py b/benchmarks/benchmarks/bench_linalg.py
+index 3077357237..e765045ddd 100644
+--- a/benchmarks/benchmarks/bench_linalg.py
++++ b/benchmarks/benchmarks/bench_linalg.py
+@@ -5,11 +5,11 @@
+ 
+ class Eindot(Benchmark):
+     def setup(self):
+-        self.a = np.arange(60000.0).reshape(150, 400)
++        self.a = np.arange(30720000.0).reshape(2400, 12800)
+         self.ac = self.a.copy()
+         self.at = self.a.T
+         self.atc = self.a.T.copy()
+-        self.b = np.arange(240000.0).reshape(400, 600)
++        self.b = np.arange(122880000.0).reshape(12800, 9600)
+         self.c = np.arange(600)
+         self.d = np.arange(400)
+ 
+@@ -111,7 +111,7 @@ def time_norm_small_array(self):
+ 
+     def time_det_small_array(self):
+         np.linalg.det(self.array_5_5)
+-        
++
+ class Lstsq(Benchmark):
+     def setup(self):
+         self.a = get_squares_()['float64']
+diff --git a/numpy/__init__.py b/numpy/__init__.py
+index e4696ba210..8b59668dfb 100644
+--- a/numpy/__init__.py
++++ b/numpy/__init__.py
+@@ -169,7 +169,7 @@
+         where, zeros, zeros_like
+     )
+ 
+-    # NOTE: It's still under discussion whether these aliases 
++    # NOTE: It's still under discussion whether these aliases
+     # should be removed.
+     for ta in ["float96", "float128", "complex192", "complex256"]:
+         try:
+@@ -184,12 +184,12 @@
+         histogram, histogram_bin_edges, histogramdd
+     )
+     from .lib._nanfunctions_impl import (
+-        nanargmax, nanargmin, nancumprod, nancumsum, nanmax, nanmean, 
++        nanargmax, nanargmin, nancumprod, nancumsum, nanmax, nanmean,
+         nanmedian, nanmin, nanpercentile, nanprod, nanquantile, nanstd,
+         nansum, nanvar
+     )
+     from .lib._function_base_impl import (
+-        select, piecewise, trim_zeros, copy, iterable, percentile, diff, 
++        select, piecewise, trim_zeros, copy, iterable, percentile, diff,
+         gradient, angle, unwrap, sort_complex, flip, rot90, extract, place,
+         vectorize, asarray_chkfinite, average, bincount, digitize, cov,
+         corrcoef, median, sinc, hamming, hanning, bartlett, blackman,
+@@ -197,8 +197,8 @@
+         interp, quantile
+     )
+     from .lib._twodim_base_impl import (
+-        diag, diagflat, eye, fliplr, flipud, tri, triu, tril, vander, 
+-        histogram2d, mask_indices, tril_indices, tril_indices_from, 
++        diag, diagflat, eye, fliplr, flipud, tri, triu, tril, vander,
++        histogram2d, mask_indices, tril_indices, tril_indices_from,
+         triu_indices, triu_indices_from
+     )
+     from .lib._shape_base_impl import (
+@@ -207,7 +207,7 @@
+         take_along_axis, tile, vsplit
+     )
+     from .lib._type_check_impl import (
+-        iscomplexobj, isrealobj, imag, iscomplex, isreal, nan_to_num, real, 
++        iscomplexobj, isrealobj, imag, iscomplex, isreal, nan_to_num, real,
+         real_if_close, typename, mintypecode, common_type
+     )
+     from .lib._arraysetops_impl import (
+@@ -232,7 +232,7 @@
+     )
+     from .lib._index_tricks_impl import (
+         diag_indices_from, diag_indices, fill_diagonal, ndindex, ndenumerate,
+-        ix_, c_, r_, s_, ogrid, mgrid, unravel_index, ravel_multi_index, 
++        ix_, c_, r_, s_, ogrid, mgrid, unravel_index, ravel_multi_index,
+         index_exp
+     )
+     from . import matrixlib as _mat
+@@ -245,7 +245,7 @@
+     # (experimental label) are not added here, because `from numpy import *`
+     # must not raise any warnings - that's too disruptive.
+     __numpy_submodules__ = {
+-        "linalg", "fft", "dtypes", "random", "polynomial", "ma", 
++        "linalg", "fft", "dtypes", "random", "polynomial", "ma",
+         "exceptions", "lib", "ctypeslib", "testing", "typing",
+         "f2py", "test", "rec", "char", "core", "strings",
+     }
+@@ -392,7 +392,7 @@ def __getattr__(attr):
+ 
+         if attr in __former_attrs__:
+             raise AttributeError(__former_attrs__[attr])
+-        
++
+         if attr in __expired_attributes__:
+             raise AttributeError(
+                 f"`np.{attr}` was removed in the NumPy 2.0 release. "
+@@ -415,7 +415,7 @@ def __dir__():
+             globals().keys() | __numpy_submodules__
+         )
+         public_symbols -= {
+-            "matrixlib", "matlib", "tests", "conftest", "version", 
++            "matrixlib", "matlib", "tests", "conftest", "version",
+             "compat", "distutils", "array_api"
+         }
+         return list(public_symbols)
+@@ -489,7 +489,7 @@ def _mac_os_check():
+     def hugepage_setup():
+         """
+         We usually use madvise hugepages support, but on some old kernels it
+-        is slow and thus better avoided. Specifically kernel version 4.6 
++        is slow and thus better avoided. Specifically kernel version 4.6
+         had a bug fix which probably fixed this:
+         https://github.com/torvalds/linux/commit/7cf91a98e607c2f935dbcc177d70011e95b8faff
+         """
+@@ -498,7 +498,7 @@ def hugepage_setup():
+             # If there is an issue with parsing the kernel version,
+             # set use_hugepage to 0. Usage of LooseVersion will handle
+             # the kernel version parsing better, but avoided since it
+-            # will increase the import time. 
++            # will increase the import time.
+             # See: #16679 for related discussion.
+             try:
+                 use_hugepage = 1
