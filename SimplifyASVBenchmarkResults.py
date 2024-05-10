@@ -70,7 +70,7 @@ def simplify_benchmark_results(target_archs, commit_hash, result_dir, benchmark_
             generate_target_dir_name(commit_hash, target_arch, benchmark_name)
         ))
         os.chdir(target_dir)
-        os.system("mkdir -p {}".format(simplified_results_dir))
+        os.makedirs(os.path.expanduser(simplified_results_dir), exist_ok=True)
         simplify_benchmark_result(target_arch, commit_hash, result_dir,
                                   simplified_results_dir, benchmark_name,
                                   tabulate)
