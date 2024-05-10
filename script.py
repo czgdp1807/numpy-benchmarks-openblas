@@ -35,4 +35,6 @@ if __name__ == "__main__":
             os.system("pip install -r requirements/build_requirements.txt")
             os.system("pip install -e . --no-build-isolation")
         else:
+            if script == "numpy-benchmarks-openblas/CompareSimplifiedBenchmarkResults.py":
+                cmd = "python ../{}".format(script)
             os.system(cmd + cmd_args)
