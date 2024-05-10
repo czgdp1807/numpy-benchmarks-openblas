@@ -53,7 +53,7 @@ def plot_results(benchmarkparams2archtimes, hardware, threshold):
         means = [mean for mean, _, _ in combined]
         spreads = [spread for _, spread, _ in combined]
         archs = [arch for _, _, arch in combined]
-        fig = plt.figure(figsize=(5, 5))
+        fig = plt.figure(figsize=(8, 8))
         plt.subplots_adjust(bottom=0.4)
         SMALL_SIZE = 8
         MEDIUM_SIZE = 10
@@ -81,7 +81,7 @@ def process_simplified_benchmark_results(target_archs, hardware, commit_hash, re
     for target_arch in target_archs:
         simplified_results_dir = os.path.expanduser("{}/simplified_results".format(result_dir))
         os.chdir(simplified_results_dir)
-        os.system("mkdir -p graphs")
+        os.makedirs("graphs", exist_ok=True)
         filename = "{}/{}.json".format(
             simplified_results_dir,
             generate_target_dir_name(commit_hash, target_arch, benchmark_name)
