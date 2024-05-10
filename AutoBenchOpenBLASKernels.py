@@ -1,6 +1,7 @@
 import os
 import argparse
 import subprocess
+import shutil
 from utils import generate_target_dir_name, openblas_target_cpu_archs
 
 def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
@@ -20,9 +21,11 @@ def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
         dest_dir, generate_target_dir_name(
             commit_hash, target_arch, benchmark_name)
     )
-    os.system("mkdir -p {}".format(target_dir))
-    os.system("cp -r results/* {}/".format(target_dir))
-    os.system("rm -rf results/")
+    os.makedirs(os.path.expanduser(target_dir), exist_ok=True)
+    if not os.path.exists("results"):
+        raise OSError("results doesn't exist in {}".format(os.getcwd()))
+    shutil.copytree("results", os.path.expanduser(target_dir), dirs_exist_ok=True)
+    shutil.rmtree("results")
     os.chdir("../")
 
 def run_benchmarks_for_cpu_archs(target_archs, commit_hash, dest_dir, benchmark_name):
