@@ -27,13 +27,9 @@ if __name__ == "__main__":
         if (script == "numpy-benchmarks-openblas/CompareSimplifiedBenchmarkResults.py" and
             args.presentation == "graph"):
             os.chdir("..")
-            os.system("pip uninstall -y numpy")
-            os.system("pip install numpy==1.26.0")
             cmd_args += "--presentation={}".format(args.presentation)
             os.system(cmd + cmd_args)
             os.chdir("numpy")
-            os.system("pip install -r requirements/build_requirements.txt")
-            os.system("pip install -e . --no-build-isolation")
         else:
             if script == "numpy-benchmarks-openblas/CompareSimplifiedBenchmarkResults.py":
                 cmd = "python ../{}".format(script)
