@@ -32,20 +32,23 @@ def simplify_benchmark_result(target_arch, commit_hash, result_dir,
                         continue
 
                     if len(result["params"]) == 0:
-                        simplified_result["mean"] = result["result"][0]
                         q3 = result["stats_q_75"][0]
                         q1 = result["stats_q_25"][0]
-                        simplified_result["spread"] = (q3 - q1)/2
-                        simplified_result["params"] = []
+                        if q3 is not None and q1 is not None:
+                            simplified_result["spread"] = (q3 - q1)/2
+                            simplified_result["mean"] = result["result"][0]
+                            simplified_result["params"] = []
                     else:
-                        simplified_result["params"] = result["params"][0]
+                        simplified_result["params"] = []
                         means = []
                         spreads = []
                         for i in range(len(result["params"][0])):
-                            means.append(result["result"][i])
                             q3 = result["stats_q_75"][i]
                             q1 = result["stats_q_25"][i]
-                            spreads.append((q3 - q1)/2)
+                            if q3 is not None and q1 is not None:
+                                means.append(result["result"][i])
+                                spreads.append((q3 - q1)/2)
+                                simplified_result["params"].append(result["params"][0][i])
                         simplified_result["mean"] = means
                         simplified_result["spread"] = spreads
 
