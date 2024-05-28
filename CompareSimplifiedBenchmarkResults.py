@@ -33,7 +33,37 @@ def tabulate_results(benchmarkparams2archtimes, threshold):
         print()
 
 def plot_results(benchmarkparams2archtimes, hardware, threshold):
+    plt.subplots_adjust(bottom=0.9, top=1)
+    SMALL_SIZE = 8
+    MEDIUM_SIZE = 10
+    BIGGER_SIZE = 12
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    plt.xticks(rotation=90)
+
+    PLOTS_PER_IMAGE = 3
+    count = 0
+    fig, axs = plt.subplots(PLOTS_PER_IMAGE, sharex=True)
+    fig.set_size_inches(14, 14)
     for benchmark in benchmarkparams2archtimes:
+        if count%PLOTS_PER_IMAGE == 0 and count > 0:
+            if PLOTS_PER_IMAGE > 1:
+                ax = axs[PLOTS_PER_IMAGE - 1]
+            else:
+                ax = axs
+            ax.set_xlabel(
+                "Target OpenBLAS Architecutre", labelpad=8, fontweight='bold')
+            fig.savefig("graphs/{}_{}.png".format(hardware, count))
+            PLOTS_PER_IMAGE = min(
+                len(benchmarkparams2archtimes) - count, PLOTS_PER_IMAGE)
+            fig, axs = plt.subplots(PLOTS_PER_IMAGE, sharex=True)
+            fig.set_size_inches(14, 14)
         are_all_below_threshold = True
         for mean, spread, arch in benchmarkparams2archtimes[benchmark]:
             if mean >= threshold:
@@ -49,31 +79,30 @@ def plot_results(benchmarkparams2archtimes, hardware, threshold):
             means.append(mean)
             spreads.append(spread)
             archs.append(arch)
-        combined = sorted(zip(means, spreads, archs))
-        means = [mean for mean, _, _ in combined]
-        spreads = [spread for _, spread, _ in combined]
-        archs = [arch for _, _, arch in combined]
-        fig = plt.figure(figsize=(8, 8))
-        plt.subplots_adjust(bottom=0.4)
-        SMALL_SIZE = 8
-        MEDIUM_SIZE = 10
-        BIGGER_SIZE = 12
+        combined = sorted(zip(archs, means, spreads))
+        means = [mean for _, mean, _ in combined]
+        spreads = [spread for _, _, spread in combined]
+        archs = [arch for arch, _, _ in combined]
 
-        plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-        plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
-        plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-        plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-        plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-        plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
-        plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
-        plt.xticks(rotation=90)
-        plt.title("Benchmark: {}\nArchitecture: {}".format(benchmark, hardware), fontweight="bold")
-        plt.xlabel("Target OpenBLAS Architecutre", labelpad=10, fontweight='bold')
-        plt.ylabel("Time (in s)", fontweight='bold')
-        plt.errorbar(archs, means, spreads, linestyle='None', marker='^')
-        plt.show()
-        fig.savefig("graphs/{}_{}.png".format(benchmark, hardware))
+        if PLOTS_PER_IMAGE > 1:
+            ax = axs[count%PLOTS_PER_IMAGE]
+        else:
+            ax = axs
+
+        ax.set_title("Benchmark: {}\nArchitecture: {}".format(benchmark, hardware), fontweight="bold")
+        ax.set_xticklabels(archs, rotation=90)
+        ax.set_ylabel("Time (in s)", fontweight='bold')
+        ax.errorbar(archs, means, spreads, linestyle='None', marker='^')
+        count += 1
         print()
+
+    if fig is not None and axs is not None:
+        if PLOTS_PER_IMAGE > 1:
+            ax = axs[PLOTS_PER_IMAGE - 1]
+        else:
+            ax = axs
+        ax.set_xlabel("Target OpenBLAS Architecutre", labelpad=10, fontweight='bold')
+        fig.savefig("graphs/{}_{}.png".format(hardware, count))
 
 def process_simplified_benchmark_results(target_archs, hardware, commit_hash, result_dir,
                                          benchmark_name, presentation, threshold):
