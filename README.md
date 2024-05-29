@@ -15,3 +15,5 @@ Inside `numpy` project root execute the following steps,
 In the third step note the `../numpy-benchmarks-openblas/script.py`. It means that `numpy-benchmarks-openblas` is in the same directory as `numpy`. For example, if `numpy` is present in `~/Quansight/` then `numpy-benchmarks-openblas` should also be present in `~/Quansight/`
 
 For graphical representation, pass` --presentation=graph`. The graphs will be saved in `simplified_results/graphs` under the path passed in `--result-dir`. For example, if you pass `--result-dir=~/x/y/z` then the graphs will be saved inside, `~/x/y/z/simplified_results/graphs`.
+
+After running the `script.py` once if you only want to do the visualisation of the benchmarking data, you need to only run the `CompareSimplifiedBenchmarkResults.py` with all the command options as it is. In other words, just replace `script.py` with `CompareSimplifiedBenchmarkResults.py`. That would just only plot graphs or output a table.
