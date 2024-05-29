@@ -13,3 +13,5 @@ Inside `numpy` project root execute the following steps,
 3. `python ../numpy-benchmarks-openblas/script.py --set-commit-hash=2da02ea321f557c0cfe0ad6d0e7d8a4354c51103 --benchmark-name=bench_linalg.Eindot.time_matmul_a_b --hardware=x86_64 --result-dir=/path/to/dir/where/results/will/be/stored/by/this/script`
 
 In the third step note the `../numpy-benchmarks-openblas/script.py`. It means that `numpy-benchmarks-openblas` is in the same directory as `numpy`. For example, if `numpy` is present in `~/Quansight/` then `numpy-benchmarks-openblas` should also be present in `~/Quansight/`
+
+For graphical representation, pass` --presentation=graph`. The graphs will be saved in `simplified_results/graphs` under the path passed in `--result-dir`. For example, if you pass `--result-dir=~/x/y/z` then the graphs will be saved inside, `~/x/y/z/simplified_results/graphs`.
