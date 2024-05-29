@@ -59,7 +59,7 @@ def plot_results(benchmarkparams2archtimes, hardware, threshold):
                 ax = axs
             ax.set_xlabel(
                 "Target OpenBLAS Architecutre", labelpad=8, fontweight='bold')
-            fig.savefig("graphs/{}_{}.png".format(hardware, count))
+            fig.savefig(os.path.join("graphs", "{}_{}.png".format(hardware, count)))
             PLOTS_PER_IMAGE = min(
                 len(benchmarkparams2archtimes) - count, PLOTS_PER_IMAGE)
             fig, axs = plt.subplots(PLOTS_PER_IMAGE, sharex=True)
@@ -102,19 +102,18 @@ def plot_results(benchmarkparams2archtimes, hardware, threshold):
         else:
             ax = axs
         ax.set_xlabel("Target OpenBLAS Architecutre", labelpad=10, fontweight='bold')
-        fig.savefig("graphs/{}_{}.png".format(hardware, count))
+        fig.savefig(os.path.join("graphs", "{}_{}.png".format(hardware, count)))
 
 def process_simplified_benchmark_results(target_archs, hardware, commit_hash, result_dir,
                                          benchmark_name, presentation, threshold):
     arch2benchdata = []
     for target_arch in target_archs:
-        simplified_results_dir = os.path.expanduser("{}/simplified_results".format(result_dir))
+        simplified_results_dir = os.path.expanduser(os.path.join(result_dir, "simplified_results"))
         os.chdir(simplified_results_dir)
         os.makedirs("graphs", exist_ok=True)
-        filename = "{}/{}.json".format(
-            simplified_results_dir,
+        filename = os.path.join(simplified_results_dir, "{}.json".format(
             generate_target_dir_name(commit_hash, target_arch, benchmark_name)
-        )
+        ))
 
         if not os.path.exists(filename):
             continue

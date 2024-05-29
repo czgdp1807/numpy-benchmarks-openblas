@@ -59,19 +59,19 @@ def simplify_benchmark_result(target_arch, commit_hash, result_dir,
                 if tabulate:
                     print(target_arch)
                     tabulate_simplified_results(simplified_results["results"])
-                outfile = open(os.path.expanduser("{}/{}.json".format(
-                    simplified_results_dir, generate_target_dir_name(
-                    commit_hash, target_arch, benchmark_name))), "w+")
+                outfile = open(os.path.expanduser(
+                    os.path.join(simplified_results_dir,
+                                 "{}.json".format(
+                    generate_target_dir_name(commit_hash, target_arch, benchmark_name)))), "w+")
                 json.dump(simplified_results, outfile)
                 outfile.close()
 
 def simplify_benchmark_results(target_archs, commit_hash, result_dir, benchmark_name, tabulate):
     for target_arch in target_archs:
-        simplified_results_dir = "{}/simplified_results".format(result_dir)
-        target_dir = os.path.expanduser("{}/{}".format(
-            result_dir,
+        simplified_results_dir = os.path.join(result_dir, "simplified_results")
+        target_dir = os.path.expanduser(os.path.join(result_dir, "{}".format(
             generate_target_dir_name(commit_hash, target_arch, benchmark_name)
-        ))
+        )))
         os.chdir(target_dir)
         os.makedirs(os.path.expanduser(simplified_results_dir), exist_ok=True)
         simplify_benchmark_result(target_arch, commit_hash, result_dir,

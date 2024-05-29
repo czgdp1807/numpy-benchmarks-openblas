@@ -17,10 +17,10 @@ def run_benchmark(target_arch, commit_hash, dest_dir, benchmark_name=None):
     else:
         subprocess.run(["asv", "run", "--show-stderr", "--python", "same",
                         "--set-commit-hash", commit_hash])
-    target_dir = "{}/{}".format(
-        dest_dir, generate_target_dir_name(
+    target_dir = os.path.join(dest_dir, "{}".format(
+        generate_target_dir_name(
             commit_hash, target_arch, benchmark_name)
-    )
+    ))
     os.makedirs(os.path.expanduser(target_dir), exist_ok=True)
     if not os.path.exists("results"):
         raise OSError("results doesn't exist in {}".format(os.getcwd()))
