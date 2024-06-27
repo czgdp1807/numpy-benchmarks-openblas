@@ -7,5 +7,23 @@
         "d": "800",
         "a3": "(60, 80, 100)",
         "b3": "(80, 60, 40)"
+    },
+    "nx": "2000",
+    "ny": "2000",
+    "nxs": "1000",
+    "nys": "1000",
+    "bench_linalg.Einsum":
+    {
+        "one_dim_small": "600",
+        "one_dim": "3000",
+        "one_dim_big": "480000",
+        "two_dim_small": "(30, 40)",
+        "two_dim": "(400, 600)",
+        "three_dim_small": "(10, 100, 10)",
+        "three_dim": "(20, 30, 40)",
+        "non_contiguous_dim1_small": "160",
+        "non_contiguous_dim1": "4000",
+        "non_contiguous_dim2": "(30, 80)",
+        "non_contiguous_dim3": "(20, 30, 80)"
     }
 }
