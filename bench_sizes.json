@@ -25,5 +25,11 @@
         "non_contiguous_dim1": "4000",
         "non_contiguous_dim2": "(30, 80)",
         "non_contiguous_dim3": "(20, 30, 80)"
+    },
+    "bench_linalg.LinAlgTransposeVdot":
+    {
+        "dim1": "(16, 16)",
+        "dim2": "(32, 32)",
+        "dim3": "(64, 64)"
     }
 }
