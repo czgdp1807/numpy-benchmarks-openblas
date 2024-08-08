@@ -44,7 +44,7 @@ def compare_results(file1, file2, threshold):
             mean2 = dict2[bench][kernel]["mean"]
             spread2 = dict2[bench][kernel]["spread"]
             perf_ratio2 = dict2[bench][kernel]["perf_ratio"]
-            if abs(mean2 - mean1)/mean1 > threshold:
+            if abs(perf_ratio2 - perf_ratio1)/perf_ratio1 > threshold:
                 archs.append(kernel)
                 means.append((mean1, mean2))
                 spreads.append((spread1, spread2))
