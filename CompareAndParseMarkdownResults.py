@@ -31,7 +31,7 @@ def compare_results(file1, file2, threshold):
     dict1, machine_info1 = read_file(file1)
     dict2, machine_info2 = read_file(file2)
     print("Machine info for file {} is {}".format(file1, machine_info1))
-    print("Machine infor for file {} is {}".format(file2, machine_info2))
+    print("Machine info for file {} is {}".format(file2, machine_info2))
     for bench in dict1:
         archs = []
         means = []
